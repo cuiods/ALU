@@ -13,7 +13,7 @@ public class ALU {
 		//System.out.println(integerAddition("1100000000000011", "0100000100000001", '0', 18));
 		//System.out.println(integerSubtraction("0000000000000111", "1000000000000011", 16));
 		//System.out.println(integerMultiplication("1001", "1010", 4));
-		System.out.println(integerDivision("0111", "0011", 5));
+		//System.out.println(integerDivision("0111", "0011", 5));
 	}
 	
 	// 1
