@@ -14,6 +14,7 @@ public class ALU {
 		//System.out.println(integerSubtraction("0000000000000111", "1000000000000011", 16));
 		//System.out.println(integerMultiplication("1001", "1010", 4));
 		//System.out.println(integerDivision("0111", "0011", 5));
+		//System.out.println(floatRepresentation("-0.4375", 52, 11));
 	}
 	
 	// 1
@@ -35,13 +36,76 @@ public class ALU {
 	}
 
 	// 3
-	public String floatRepresentation(String number, int sLength, int eLength){
-		
-		return null;
+	public static String floatRepresentation(String number, int sLength, int eLength){
+		double num = Double.parseDouble(number);
+		String floatRepre = num>=0?"0":"1";
+		int zheng = Math.abs((int) num);
+		double xiao = Math.abs(num - zheng);
+		String temp1 = Integer.toBinaryString(zheng);
+		String temp2 = "";
+		String mantissa = "";
+		for(int i = 0; i < (int)(Math.pow(2, eLength-1)-2+sLength); i++){
+			if(2*xiao>=1){
+				temp2+="1";
+				xiao = 2.0*xiao -1;
+			}else{
+				temp2+="0";
+				xiao = 2.0*xiao;
+			}
+		}
+		int exponent = temp1.length()-1+ (int)(Math.pow(2, eLength-1)-1);
+		if(temp1.equals("0")){
+			for(int i = 1; i <= (int)(Math.pow(2, eLength-1)-2+sLength); i++){
+				if(temp2.charAt(i-1)!='0'){
+					if(i <= (int)(Math.pow(2, eLength-1)-2)){
+						exponent -= i;
+						mantissa = temp2.substring(i, i+sLength);
+					}else{
+						exponent = 0;
+						mantissa = temp2.substring(i-1);
+						while(mantissa.length()<sLength){
+							mantissa+="0";
+						}
+					}
+					break;
+				}
+				if(i==(int)(Math.pow(2, eLength-1)-2+sLength)){
+					while(mantissa.length()<sLength){
+						mantissa+="0";
+					}
+				}
+			}
+		}else{
+			mantissa = temp1.substring(1);
+//			System.out.println(mantissa);
+			int i = 0;
+			while(mantissa.length()<sLength){
+				mantissa+=temp2.charAt(i);
+				i++;
+			}
+			if(mantissa.length()>sLength){
+				mantissa = temp1.substring(1,1+sLength);
+			}
+		}
+		String expo = Integer.toBinaryString(exponent);
+		while(expo.length()<eLength){
+			expo = "0" + expo;
+		}
+//		System.out.println(expo);
+//		System.out.println(mantissa);
+//		System.out.println(temp2.substring(0,sLength));
+		floatRepre+=(expo+mantissa);
+	    
+		return floatRepre;
 	}
 
 	// 4
-	public String ieee754(String number, int length) {
+	public static String ieee754(String number, int length) {
+		if(length == 32){
+			return floatRepresentation(number, 23, 8);
+		}else if(length == 64){
+			return floatRepresentation(number, 52, 11);
+		}
 		return null;
 	}
 
@@ -57,7 +121,16 @@ public class ALU {
 
 	// 6
 	public String floatTrueValue(String operand, int sLength, int eLength){
-		return null;
+		String floatValue = "";
+		boolean isNegative = false;
+		if(operand.charAt(0)=='1'){
+			isNegative = true;
+			floatValue+="-";
+		}
+		String e = operand.substring(1, 1+eLength);
+		String s = operand.substring(1+eLength);
+		
+		return floatValue;
 	}
 
 	// 7
