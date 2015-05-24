@@ -13,6 +13,7 @@ public class ALU {
 		//System.out.println(integerAddition("1100000000000011", "0100000100000001", '0', 18));
 		//System.out.println(integerSubtraction("0000000000000111", "1000000000000011", 16));
 		//System.out.println(integerMultiplication("1001", "1010", 4));
+		System.out.println(integerDivision("0111", "0011", 5));
 	}
 	
 	// 1
@@ -73,7 +74,7 @@ public class ALU {
 	}
 
 	// 8
-	public String leftShift(String operand, int n) {
+	public static String leftShift(String operand, int n) {
 		int length = operand.length();
 		operand = operand.substring(n, length);
 //		for(int i = 0; i < n; i++){
@@ -219,8 +220,46 @@ public class ALU {
 	}
 
 	// 16
-	public String integerDivision (String operand1, String operand2, int length) {
-		return null;
+	public static String integerDivision (String operand1, String operand2, int length) {
+		for(int i = 0; i < length; i++){
+			if(operand1.length()<length){
+				operand1 = operand1.charAt(0)+operand1;
+			}
+			if(operand2.length()<length){
+				operand2 = operand2.charAt(0)+operand2;
+			}
+		}
+		boolean isSameSign = true;
+		if(operand1.charAt(0)!=operand2.charAt(0)){
+			isSameSign = false;
+		}
+		for(int i = 0; i < length; i++){
+			operand1=operand1.charAt(0)+operand1;
+		}
+		for(int i = 0; i < length; i++){
+			operand1 = leftShift(operand1, 1);
+			char memorySign = operand1.charAt(0);
+			String memoryStr = operand1;
+			if(operand1.charAt(0)==operand2.charAt(0)){
+				String temp = integerSubtraction(operand1.substring(0, length), operand2, length);
+				operand1 = temp.substring(0, length) + operand1.substring(length);
+			}else{
+				String temp = integerAddition(operand1.substring(0, length), operand2, '0', length);
+				operand1 = temp.substring(0, length) + operand1.substring(length);
+			}
+			if(memorySign == operand1.charAt(0)||Integer.parseInt(integerTrueValue(operand1.substring(0,length)))==0){
+				operand1+="1";
+			}else{
+				operand1 = memoryStr;
+				operand1+="0";
+			}
+		}
+		if(!isSameSign){
+			int quotientTemp = -Integer.parseInt(integerTrueValue(operand1.substring(length)));
+			operand1 = operand1.substring(0,length)+integerRepresentation(quotientTemp+"", length);
+		}
+		operand1 = operand1.substring(length)+operand1.substring(0,length);
+		return operand1;
 	}
 
 	// 17
