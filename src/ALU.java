@@ -3,30 +3,31 @@ import java.math.BigInteger;
 
 public class ALU {
 	
-	public static void main(String[] args){
-		//System.out.println(integerRepresentation(-1+"", 32));
-		//System.out.println(integerTrueValue("10000000"));
-		//System.out.println(negation("10101010"));
-		//System.out.println(leftShift("111101", 1));
-		//System.out.println(rightAriShift("1101001", 2));
-		//System.out.println(rightLogShift("1101001", 2));
-		//System.out.println(fullAdder('1', '0', '0'));
-		//System.out.println(claAdder("11111111", "00000001", '1'));
-		//System.out.println(integerAddition("11111111", "10000000", '0', 8));
-		//System.out.println(integerSubtraction("0000000000000111", "0000000000000111", 16));
-		//System.out.println(integerMultiplication("1001", "1010", 4));
-		//System.out.println(integerDivision("1010", "0010", 4));
-		//System.out.println(floatRepresentation("0.5", 23, 8));
-		//System.out.print(floatTrueValue("10000000000000000000000000000001", 23, 8));
-		//System.out.println(floatMultiplication("10111111000000000000000000000000", "00111110111000000000000000000000", 23, 8));
-		//System.out.println(floatDivision("00111110111000000000000000000000", "10111111000000000000000000000000", 23, 8));
-		//System.out.println(floatAddition("00111111000000000000000000000000", "00111110111000000000000000000000", 23, 8, 5));
-		//System.out.println(floatSubtraction("00111111000000000000000000000000", "10111110111000000000000000000000", 23, 8, 5));
-		System.out.println(calculation("9/3.0="));
-	}
+//	public static void main(String[] args){
+//		//System.out.println(integerRepresentation(-1+"", 32));
+//		//System.out.println(integerTrueValue("10000000"));
+//		//System.out.println(negation("10101010"));
+//		//System.out.println(leftShift("111101", 1));
+//		//System.out.println(rightAriShift("1101001", 2));
+//		//System.out.println(rightLogShift("1101001", 2));
+//		//System.out.println(fullAdder('1', '0', '0'));
+//		//01111100  00100010  00011110
+//		//System.out.println(claAdder("01100011", "11111001", '0'));
+//		//System.out.println(integerAddition("11111111", "10000000", '0', 8));
+//		//System.out.println(integerSubtraction("0000000000000111", "0000000000000111", 16));
+//		//System.out.println(integerMultiplication("1001", "1010", 4));
+//		//System.out.println(integerDivision("1010", "0010", 4));
+//		//System.out.println(floatRepresentation("0.5", 23, 8));
+//		//System.out.print(floatTrueValue("10000000000000000000000000000001", 23, 8));
+//		//System.out.println(floatMultiplication("10111111000000000000000000000000", "00111110111000000000000000000000", 23, 8));
+//		//System.out.println(floatDivision("00111110111000000000000000000000", "10111111000000000000000000000000", 23, 8));
+//		//System.out.println(floatAddition("00111111000000000000000000000000", "00111110111000000000000000000000", 23, 8, 5));
+//		//System.out.println(floatSubtraction("00111111000000000000000000000000", "10111110111000000000000000000000", 23, 8, 5));
+//		//System.out.println(calculation("1.5/(-1.5)="));
+//	}
 	
 	// 1
-	public static String calculation(String formula){
+	public String calculation(String formula){
 		String result = "";
 		int operation = 0;//0:+  1:-  2:*  3:/
 		int cutIndex = 0;
@@ -108,7 +109,7 @@ public class ALU {
 	}
 
 	// 2
-	public static String integerRepresentation(String number, int length) {
+	public String integerRepresentation(String number, int length) {
 		String integerRepresentation = "";
 		long num = Integer.parseInt(number);
 		int sign = num<0?1:0;
@@ -121,7 +122,7 @@ public class ALU {
 	}
 
 	// 3
-	public static String floatRepresentation(String number, int sLength, int eLength){
+	public String floatRepresentation(String number, int sLength, int eLength){
 		double num = Double.parseDouble(number);
 		//judge sign
 		String floatRepre = num>=0?"0":"1";
@@ -230,7 +231,7 @@ public class ALU {
 	}
 
 	// 4
-	public static String ieee754(String number, int length) {
+	public String ieee754(String number, int length) {
 		assert length==32||length==64;
 		if(length == 32){
 			return floatRepresentation(number, 23, 8);
@@ -241,7 +242,7 @@ public class ALU {
 	}
 
 	// 5
-	public static String integerTrueValue(String operand){
+	public String integerTrueValue(String operand){
 		char cut = operand.charAt(0);
 		for(int i = 0; i < operand.length(); i++){
 			if(operand.charAt(i)!=cut){
@@ -258,13 +259,16 @@ public class ALU {
 	}
 
 	// 6
-	public static String floatTrueValue(String operand, int sLength, int eLength){
+	public String floatTrueValue(String operand, int sLength, int eLength){
 		String sign = "";
 		if(operand.charAt(0)=='1'){
 			sign+="-";
 		}	
 		String e = operand.substring(1, 1+eLength);
 		String s = operand.substring(1+eLength);
+		if(Integer.valueOf(e, 2)==0&&Integer.valueOf(s,2)==0){
+			return "0";
+		}
 		if(Integer.parseInt(integerTrueValue("0"+e))==(Math.pow(2, eLength)-1)){
 			for(int i = 0; i < sLength; i++){
 				if(s.charAt(i)=='1'){
@@ -292,7 +296,7 @@ public class ALU {
 	}
 
 	// 7
-	public static String negation(String operand) {
+	public String negation(String operand) {
 		String negation = "";
 		for(int i = 0; i < operand.length(); i++){
 			if(operand.charAt(i)=='1'){
@@ -305,7 +309,7 @@ public class ALU {
 	}
 
 	// 8
-	public static String leftShift(String operand, int n) {
+	public String leftShift(String operand, int n) {
 		int length = operand.length();
 		operand = operand.substring(n, length);
 //		for(int i = 0; i < n; i++){
@@ -315,7 +319,7 @@ public class ALU {
 	}
 
 	// 9
-	public static String rightAriShift(String operand, int n) {
+	public String rightAriShift(String operand, int n) {
 		//operand = operand.substring(0, operand.length()-n);
 		String ariAdd = operand.charAt(0)+"";
 		for(int i = 0; i < n; i++){
@@ -325,7 +329,7 @@ public class ALU {
 	}
 
 	// 10
-	public static String rightLogShift(String operand, int n){
+	public String rightLogShift(String operand, int n){
 		//operand = operand.substring(0, operand.length()-n);
 		for(int i = 0; i < n; i++){
 			operand = "0" + operand;
@@ -334,13 +338,13 @@ public class ALU {
 	}
 
 	// 11
-	public static String fullAdder(char x, char y, char c) {
+	public String fullAdder(char x, char y, char c) {
 		char s = xor(xor(x,y),c);
 		char c1 = or(or(and(x,c),and(y,c)),and(x,y));
 		return (s+"")+(c1+"");
 	}
 	
-	public static char xor(char x,char y){
+	public char xor(char x,char y){
 		if(x==y){
 			return '0';
 		}else{
@@ -348,7 +352,7 @@ public class ALU {
 		}
 	}
 	
-	public static char and(char x, char y){
+	public char and(char x, char y){
 		if(x=='1'&&y=='1'){
 			return '1';
 		}else{
@@ -356,7 +360,7 @@ public class ALU {
 		}
 	}
 	
-	public static char or(char x, char y){
+	public char or(char x, char y){
 		if(x=='0'&&y=='0'){
 			return '0';
 		}else{
@@ -365,18 +369,55 @@ public class ALU {
 	}
 
 	// 12
-	public static String claAdder(String operand1, String operand2, char c) {
+	public String claAdder(String operand1, String operand2, char c) {
 		String result = "";
-		for(int i = 7; i >= 0; i--){
-			String str = fullAdder(operand1.charAt(i), operand2.charAt(i), c);
-			result = str.charAt(0)+result;
-			c = str.charAt(1);
+//		for(int i = 7; i >= 0; i--){
+//			String str = fullAdder(operand1.charAt(i), operand2.charAt(i), c);
+//			result = str.charAt(0)+result;
+//			c = str.charAt(1);
+//		}
+		char[] p = new char[8];
+		char[] g = new char[8];
+		char[] ci = new char[8];
+		char[] results = new char[8];
+		for(int i = 0; i < 8; i++){
+			p[7-i] = or(operand1.charAt(i),operand2.charAt(i));
+			g[7-i] = and(operand1.charAt(i),operand2.charAt(i));
 		}
-		return result+(c+"");
+		//ci[0] = or(g[0],and(p[0],c));
+		for(int i = 0; i < 8; i++){
+			char temp1 = g[i];
+			for(int j = 0; j <= i; j++){
+				char temp2;
+				if(j == 0){
+					temp2 = c;
+				}else{
+					temp2 = g[j-1];
+				}
+				for(int k = i; k >= j; k--){
+					temp2 = and(temp2,p[k]);
+				}
+				temp1 = or(temp1,temp2);
+			}
+			ci[i] = temp1;
+		}
+		for(int i = 0; i < 8; i++){
+			if(i == 0){
+				results[i] = fullAdder(operand1.charAt(7-i), operand2.charAt(7-i), c).charAt(0);
+			}else{
+				results[i] = fullAdder(operand1.charAt(7-i), operand2.charAt(7-i), ci[i-1]).charAt(0);
+			}
+		}
+		for(int i = 0; i <8; i++){
+			result = results[i]+result;
+		}
+		return result+(ci[7]+"");
 	}
 
 	// 13
-	public static String integerAddition(String operand1, String operand2, char c, int length) {
+	public String integerAddition(String operand1, String operand2, char c, int length) {
+//		System.out.println(operand1);
+//		System.out.println(operand2);
 		String result = "";
 		for(int i = 0; i < length; i++){
 			if(operand1.length()<length){
@@ -396,6 +437,7 @@ public class ALU {
 				temp = claAdder(operand1.substring(i*8+length%8, i*8+9+length%8), operand2.substring(i*8+length%8, i*8+9+length%8), c);
 			}
 			result = temp.substring(0, 8) + result;
+			//System.out.println(result);
 			c = temp.charAt(8);
 		}
 		for(int i = length%8-1; i>=0; i--){
@@ -414,14 +456,14 @@ public class ALU {
 	}
 
 	// 14
-	public static String integerSubtraction(String operand1, String operand2, int length) {
+	public String integerSubtraction(String operand1, String operand2, int length) {
 		String neg = integerTrueValue(operand2);
 		operand2 = integerRepresentation((-Integer.parseInt(neg))+"", length);
 		return integerAddition(operand1, operand2, '0', length);
 	}
 
 	// 15
-	public static String integerMultiplication(String operand1, String operand2, int length) {
+	public String integerMultiplication(String operand1, String operand2, int length) {
 		for(int i = 0; i < length; i++){
 			if(operand1.length()<length){
 				operand1 = operand1.charAt(0)+operand1;
@@ -451,7 +493,7 @@ public class ALU {
 	}
 
 	// 16
-	public static String integerDivision (String operand1, String operand2, int length) {
+	public String integerDivision (String operand1, String operand2, int length) {
 		for(int i = 0; i < length; i++){
 			if(operand1.length()<length){
 				operand1 = operand1.charAt(0)+operand1;
@@ -495,7 +537,7 @@ public class ALU {
 	}
 
 	// 17
-	public static String floatAddition(String operand1, String operand2, int sLength,
+	public String floatAddition(String operand1, String operand2, int sLength,
 			int eLength, int gLength) {
 		if(floatTrueValue(operand1, sLength, eLength).equals("0")){
 			return operand2;
@@ -613,7 +655,7 @@ public class ALU {
 		return sign+exponent+mantissa+yichu;
 	}
 	
-	public static String complement(String s){
+	public String complement(String s){
 		int index = s.length();
 		for(int i = s.length()-1; i>=0; i--){
 			if(s.charAt(i)=='1'){
@@ -625,7 +667,7 @@ public class ALU {
 	}
 
 	// 18
-	public static String floatSubtraction(String operand1, String operand2,
+	public String floatSubtraction(String operand1, String operand2,
 			int sLength, int eLength, int gLength) {
 		if(operand2.charAt(0)=='0'){
 			operand2 = "1" + operand2.substring(1);
@@ -636,7 +678,7 @@ public class ALU {
 	}
 
 	// 19
-	public static String floatMultiplication(String operand1, String operand2, 
+	public String floatMultiplication(String operand1, String operand2, 
 			int sLength, int eLength) {
 		for(int i = 1; i < operand1.length(); i++){
 			if(operand1.charAt(i)=='1'){
@@ -695,7 +737,7 @@ public class ALU {
 	}
 	
 	//20
-	public static String floatDivision(String operand1, String operand2, 
+	public String floatDivision(String operand1, String operand2, 
 			int sLength, int eLength) {
 		for(int i = 1; i < operand1.length(); i++){
 			if(operand1.charAt(i)=='1'){
@@ -771,7 +813,6 @@ public class ALU {
 		while(mantissa.length()<sLength){
 			mantissa+="0";
 		}
-		//01000010110010000000000000000000
 		return xor(operand1.charAt(0), operand2.charAt(0))+""+exponent+mantissa;
 	}
 }
